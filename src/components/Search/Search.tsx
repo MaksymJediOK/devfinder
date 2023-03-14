@@ -1,10 +1,47 @@
-// @ts-ignore
-import styles from './Search.module.scss'
+import { ReactComponent as SearchIcon } from 'assets/icon-search.svg'
+import { Button } from 'components/Button'
 
-interface SearchProps { }
+import classes from './Search.module.scss'
+import { FormEvent } from 'react'
 
-export const Search = ({ }: SearchProps) => (
-  <div className={styles.search} >
-    Search Component
-  </div>
-);
+interface SearchProps {
+	hasError: boolean
+	onSubmit: (text: string) => void
+}
+
+type FormFields = {
+	username: HTMLInputElement
+}
+
+const Search = ({ hasError, onSubmit }: SearchProps) => {
+	const handleSubmit = (event: FormEvent<HTMLFormElement & FormFields>) => {
+		event.preventDefault()
+		const text = event.currentTarget.username.value
+
+		if (text) {
+			onSubmit(text)
+			event.currentTarget.reset()
+		}
+	}
+
+	return (
+		<form onSubmit={handleSubmit} autoComplete='off'>
+			<div className={classes.search}>
+				<label htmlFor='search' className={classes.label}>
+					<SearchIcon />
+				</label>
+				<input
+					id='search'
+					className={classes.textField}
+					type='text'
+					name='username'
+					placeholder='Search GitHub username…'
+				/>
+				{hasError && <div className={classes.error}>No results</div>}
+				<Button>Search</Button>
+			</div>
+		</form>
+	)
+}
+
+export { Search }

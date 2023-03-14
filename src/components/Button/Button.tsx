@@ -1,10 +1,13 @@
-// @ts-ignore
 import styles from './Button.module.scss'
+import { MouseEventHandler } from 'react'
 
-interface ButtonProps { }
+interface ButtonProps {
+	children: string
+	onClick?: MouseEventHandler<HTMLButtonElement>
+}
 
-export const Button = ({ }: ButtonProps) => (
-  <div className={styles.button} >
-    Button Component
-  </div>
-);
+export const Button = ({ children, onClick }: ButtonProps) => (
+	<button className={styles.button} onClick={onClick}>
+		{children}
+	</button>
+)
